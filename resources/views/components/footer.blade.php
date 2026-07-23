@@ -55,9 +55,6 @@
             <p class="text-label-sm font-label-sm text-on-surface-variant text-center md:text-left">
                 &copy; {{ date('Y') }} GALAKSI XII SMKN 3 Jepara. Hak cipta dilindungi.
             </p>
-            <p class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1.5">
-                Dibuat dengan <span class="material-symbols-outlined text-[16px] text-error fill-icon animate-pulse">favorite</span> untuk siswa.
-            </p>
         </div>
     </div>
 </footer>
