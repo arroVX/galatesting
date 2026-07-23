@@ -66,6 +66,7 @@ class PageController extends Controller
 
     public function addToCart(Request $request, $id)
     {
+        \App\Services\ProductStoreService::ensureDatabasePopulated();
         $product = Product::findOrFail($id);
         $cart = session()->get('cart', []);
 

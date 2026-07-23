@@ -63,6 +63,7 @@ class AdminController extends Controller
     public function storeProduct(Request $request)
     {
         $this->checkAuth();
+        ProductStoreService::ensureDatabasePopulated();
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -100,6 +101,7 @@ class AdminController extends Controller
     public function editProduct($id)
     {
         $this->checkAuth();
+        ProductStoreService::ensureDatabasePopulated();
         $product = Product::findOrFail($id);
         return view('admin.product-form', compact('product'));
     }
@@ -107,6 +109,7 @@ class AdminController extends Controller
     public function updateProduct(Request $request, $id)
     {
         $this->checkAuth();
+        ProductStoreService::ensureDatabasePopulated();
         $product = Product::findOrFail($id);
 
         $request->validate([
@@ -142,6 +145,7 @@ class AdminController extends Controller
     public function destroyProduct($id)
     {
         $this->checkAuth();
+        ProductStoreService::ensureDatabasePopulated();
         $product = Product::findOrFail($id);
         $product->delete();
         ProductStoreService::saveAllProductsFromDb();
