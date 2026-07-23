@@ -9,7 +9,7 @@ class ProductStoreService
 {
     private static function getFirebaseUrl()
     {
-        return 'https://galaksi-xii-default-rtdb.asia-southeast1.firebaseio.com/products.json';
+        return 'https://galaksi-xii-default-rtdb.asia-southeast1.firebasedatabase.app/products.json';
     }
 
     private static function getLocalStoragePath()
@@ -23,9 +23,9 @@ class ProductStoreService
 
     public static function loadSavedProducts()
     {
-        // 1. Try fetching from Cloud Firebase Realtime Database (Permanent Cloud Store)
+        // 1. Try fetching from Cloud Firebase Realtime Database (100% Permanent Cloud Store)
         try {
-            $response = Http::timeout(3)->get(self::getFirebaseUrl());
+            $response = Http::withoutVerifying()->timeout(5)->get(self::getFirebaseUrl());
             if ($response->successful()) {
                 $data = $response->json();
                 if (is_array($data) && count($data) > 0) {
@@ -58,8 +58,8 @@ class ProductStoreService
             // Save to local file cache
             @file_put_contents(self::getLocalStoragePath(), json_encode($products, JSON_PRETTY_PRINT));
 
-            // Sync to Cloud Firebase Realtime Database for 100% permanent storage across serverless restarts
-            Http::timeout(5)->put(self::getFirebaseUrl(), $products);
+            // Sync to Cloud Firebase Realtime Database for permanent storage across serverless restarts
+            Http::withoutVerifying()->timeout(5)->put(self::getFirebaseUrl(), $products);
         } catch (\Throwable $e) {
             // Ignore
         }
@@ -79,7 +79,6 @@ class ProductStoreService
                     }
                 } else {
                     \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-                    self::saveAllProductsFromDb();
                 }
             }
         } catch (\Throwable $e) {
@@ -93,7 +92,6 @@ class ProductStoreService
                     }
                 } else {
                     \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-                    self::saveAllProductsFromDb();
                 }
             } catch (\Throwable $ex) {
                 // Ignore
