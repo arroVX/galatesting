@@ -7,6 +7,13 @@
         }
     ],
     "routes": [
-        { "src": "/(.*)", "dest": "/api/index.php" }
+        {
+            "src": "/(css|js|images|fonts|favicon.ico|favicon.png|robots.txt)(.*)",
+            "dest": "/public/$1$2"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
     ]
 }
