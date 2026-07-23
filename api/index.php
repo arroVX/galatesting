@@ -14,6 +14,7 @@ putenv('SESSION_DRIVER=cookie');
 putenv('CACHE_STORE=array');
 putenv('DB_CONNECTION=sqlite');
 putenv('DB_DATABASE=/tmp/database.sqlite');
+putenv('ASSET_URL=/');
 
 $_ENV['APP_STORAGE'] = '/tmp';
 $_ENV['APP_CONFIG_CACHE'] = '/tmp/config.php';
@@ -27,6 +28,7 @@ $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['CACHE_STORE'] = 'array';
 $_ENV['DB_CONNECTION'] = 'sqlite';
 $_ENV['DB_DATABASE'] = '/tmp/database.sqlite';
+$_ENV['ASSET_URL'] = '/';
 
 // Create writable storage structure & sqlite file inside Vercel /tmp directory
 $dirs = [
