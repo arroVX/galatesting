@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Services\ProductStoreService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -47,6 +48,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         $this->checkAuth();
+        ProductStoreService::ensureDatabasePopulated();
         $products = Product::orderBy('created_at', 'desc')->get();
         return view('admin.dashboard', compact('products'));
     }
@@ -90,6 +92,7 @@ class AdminController extends Controller
             'image_url' => $imageUrl,
             'description' => $request->input('description', 'Official Galaksi XII Merchandise'),
         ]);
+        ProductStoreService::saveAllProductsFromDb();
 
         return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil ditambahkan!');
     }
@@ -131,6 +134,7 @@ class AdminController extends Controller
         $product->category = $request->input('category');
         $product->description = $request->input('description', 'Official Galaksi XII Merchandise');
         $product->save();
+        ProductStoreService::saveAllProductsFromDb();
 
         return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil diperbarui!');
     }
@@ -140,6 +144,7 @@ class AdminController extends Controller
         $this->checkAuth();
         $product = Product::findOrFail($id);
         $product->delete();
+        ProductStoreService::saveAllProductsFromDb();
         return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil dihapus!');
     }
 }

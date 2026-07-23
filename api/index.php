@@ -1,5 +1,29 @@
 <?php
 
+// Directly serve static assets if they exist in public directory
+$uri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH));
+$publicFile = __DIR__ . '/../public' . $uri;
+
+if ($uri !== '/' && file_exists($publicFile) && !is_dir($publicFile)) {
+    $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
+    $mimes = [
+        'png' => 'image/png',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'webp' => 'image/webp',
+        'gif' => 'image/gif',
+        'svg' => 'image/svg+xml',
+        'css' => 'text/css',
+        'js' => 'application/javascript',
+        'ico' => 'image/x-icon',
+    ];
+    $mime = $mimes[strtolower($ext)] ?? (mime_content_type($publicFile) ?: 'application/octet-stream');
+    header('Content-Type: ' . $mime);
+    header('Cache-Control: public, max-age=31536000');
+    readfile($publicFile);
+    exit;
+}
+
 // Set writable paths & environment variables for Vercel Serverless Environment
 putenv('APP_STORAGE=/tmp');
 putenv('APP_CONFIG_CACHE=/tmp/config.php');

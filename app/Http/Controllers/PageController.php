@@ -17,22 +17,8 @@ class PageController extends Controller
 
     public function merchandise()
     {
-        try {
-            $products = Product::all();
-            if ($products->isEmpty()) {
-                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-                $products = Product::all();
-            }
-        } catch (\Throwable $e) {
-            try {
-                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-                $products = Product::all();
-            } catch (\Throwable $ex) {
-                $products = collect();
-            }
-        }
+        \App\Services\ProductStoreService::ensureDatabasePopulated();
+        $products = Product::all();
         return view('merchandise', compact('products'));
     }
 
