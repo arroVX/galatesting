@@ -72,13 +72,18 @@ class PageController extends Controller
         $qty = (int) $request->input('quantity', 1);
         if ($qty < 1) $qty = 1;
 
+        $imgUrl = $product->image_url;
+        if (str_starts_with($imgUrl, 'data:') && strlen($imgUrl) > 500) {
+            $imgUrl = '/images/keychain.jpg';
+        }
+
         if ($request->has('direct_checkout')) {
             $buyNowCart = [
                 $id => [
                     "name" => $product->name,
                     "quantity" => $qty,
                     "price" => $product->price,
-                    "image_url" => $product->image_url,
+                    "image_url" => $imgUrl,
                     "category" => $product->category
                 ]
             ];
@@ -88,12 +93,13 @@ class PageController extends Controller
 
         if(isset($cart[$id])) {
             $cart[$id]['quantity'] += $qty;
+            $cart[$id]['image_url'] = $imgUrl;
         } else {
             $cart[$id] = [
                 "name" => $product->name,
                 "quantity" => $qty,
                 "price" => $product->price,
-                "image_url" => $product->image_url,
+                "image_url" => $imgUrl,
                 "category" => $product->category
             ];
         }
