@@ -72,10 +72,15 @@ class AdminController extends Controller
         $imageUrl = '';
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->input('name')) . '.' . $file->getClientOriginalExtension();
-            // Store directly in public/images for simplicity in this project
-            $file->move(public_path('images/merch'), $filename);
-            $imageUrl = asset('images/merch/' . $filename);
+            try {
+                $filename = time() . '_' . Str::slug($request->input('name')) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/merch'), $filename);
+                $imageUrl = asset('images/merch/' . $filename);
+            } catch (\Throwable $e) {
+                $imageData = base64_encode(file_get_contents($file->getRealPath()));
+                $mime = $file->getMimeType() ?: 'image/png';
+                $imageUrl = 'data:' . $mime . ';base64,' . $imageData;
+            }
         }
 
         Product::create([
@@ -110,9 +115,15 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $filename = time() . '_' . Str::slug($request->input('name')) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images/merch'), $filename);
-            $product->image_url = asset('images/merch/' . $filename);
+            try {
+                $filename = time() . '_' . Str::slug($request->input('name')) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('images/merch'), $filename);
+                $product->image_url = asset('images/merch/' . $filename);
+            } catch (\Throwable $e) {
+                $imageData = base64_encode(file_get_contents($file->getRealPath()));
+                $mime = $file->getMimeType() ?: 'image/png';
+                $product->image_url = 'data:' . $mime . ';base64,' . $imageData;
+            }
         }
 
         $product->name = $request->input('name');
