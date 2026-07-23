@@ -42,12 +42,12 @@
         confirmButtonColor: undefined
     });
 </script>
-<div class="w-full flex justify-center sticky top-6 md:top-8 z-50 mb-6 md:mb-8 px-6 md:px-16">
-<header class="w-full max-w-7xl bg-surface/90 dark:bg-surface-container-highest/90 backdrop-blur-md border border-outline-variant rounded-full px-5 md:px-6 py-3 shadow-md flex justify-between items-center transition-all duration-300" id="global-header">
-<div class="flex items-center gap-4">
+<div class="w-full flex justify-center sticky top-4 md:top-8 z-50 mb-4 md:mb-8 px-3 sm:px-6 md:px-16">
+<header class="w-full max-w-7xl bg-white/95 backdrop-blur-md border border-[#e4e2e2] rounded-full px-3.5 sm:px-5 md:px-6 py-2 md:py-3 shadow-md flex justify-between items-center transition-all duration-300" id="global-header">
+<div class="flex items-center gap-2 sm:gap-4">
 <!-- Brand -->
 <a class="flex items-center shrink-0 hover:scale-105 transition-transform duration-200" href="{{ url('/') }}">
-    <img src="{{ asset('images/logo.png') }}" alt="Galaksi XII Logo" class="h-10 md:h-14 w-auto object-contain">
+    <img src="{{ asset('images/logo.png') }}" alt="Galaksi XII Logo" class="h-7 sm:h-9 md:h-12 w-auto object-contain">
 </a>
 <!-- Badge -->
 <div class="hidden md:flex items-center gap-2 bg-surface-container border border-outline-variant px-3 py-1.5 rounded-full hover:border-primary/50 transition-colors">
@@ -71,12 +71,12 @@
     @endif
 </nav>
 <!-- Trailing Actions (Cart & Dedicated Login Button) -->
-<div class="flex items-center gap-2.5">
+<div class="flex items-center gap-1.5 sm:gap-2.5">
 
 @if(!Request::is('admin*'))
     <!-- Cart Icon Button -->
-    <a href="{{ route('cart.index') }}" aria-label="shopping_bag" class="flex items-center justify-center w-10 h-10 rounded-xl bg-surface-container-low border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container-high hover:scale-105 active:scale-95 transition-all relative">
-    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+    <a href="{{ route('cart.index') }}" aria-label="shopping_bag" class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container-low border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container-high hover:scale-105 active:scale-95 transition-all relative">
+    <span class="material-symbols-outlined text-[18px] sm:text-[20px]" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
     @if(session('cart') && count(session('cart')) > 0)
     <span class="absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center cart-badge-bounce">{{ count(session('cart')) }}</span>
     @endif
@@ -85,20 +85,20 @@
     <!-- Dedicated Login / User Button (Desktop & Mobile) -->
     <div id="navbar-auth-container" class="relative group">
         <!-- Default Loading State (Spinner) -->
-        <div class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-surface-container-high border border-outline-variant text-on-surface-variant font-bold rounded-full text-xs">
-            <span class="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent text-primary rounded-full" role="status" aria-label="loading"></span>
+        <div class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-surface-container-high border border-outline-variant text-on-surface-variant font-bold rounded-full text-xs">
+            <span class="animate-spin inline-block w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-current border-t-transparent text-primary rounded-full" role="status" aria-label="loading"></span>
         </div>
     </div>
 @else
     <!-- Admin Badge -->
-    <div class="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-red-50 border border-red-100 text-red-600 font-bold rounded-full text-xs">
-        <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span> Administrator
+    <div class="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-red-50 border border-red-100 text-red-600 font-bold rounded-full text-xs">
+        <span class="material-symbols-outlined text-[15px] sm:text-[16px]">admin_panel_settings</span> <span class="hidden sm:inline">Administrator</span>
     </div>
 @endif
 
 <!-- Mobile Menu Toggle -->
-<button id="mobile-menu-btn" class="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-surface-container-low border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container-high transition-all ml-0.5" aria-label="Buka Menu">
-<span class="material-symbols-outlined text-[20px]">menu</span>
+<button id="mobile-menu-btn" class="lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container-low border border-outline-variant text-secondary hover:text-primary hover:bg-surface-container-high transition-all ml-0.5" aria-label="Buka Menu">
+<span class="material-symbols-outlined text-[18px] sm:text-[20px]">menu</span>
 </button>
 </div>
 </header>
@@ -110,7 +110,7 @@
     <div id="mobile-menu-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
     
     <!-- Drawer Panel -->
-    <div class="relative w-full max-w-sm ml-auto h-full bg-surface dark:bg-surface-container-highest shadow-2xl flex flex-col p-6 transform translate-x-full transition-transform duration-300 ease-out" id="mobile-menu-panel">
+    <div class="relative w-full max-w-sm ml-auto h-full bg-[#fbf8f8] shadow-2xl flex flex-col p-6 transform translate-x-full transition-transform duration-300 ease-out" id="mobile-menu-panel">
         <!-- Drawer Header -->
         <div class="flex items-center justify-between border-b border-outline-variant/30 pb-4 mb-6">
             <div class="flex items-center gap-3">
@@ -314,10 +314,10 @@
                     if(modalUserName) modalUserName.textContent = displayName;
                     
                     container.innerHTML = `
-                        <button type="button" onclick="openLogoutModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-surface-container-high border border-outline-variant text-primary font-bold rounded-full text-xs hover:bg-error hover:text-white transition-all shadow-sm active:scale-95">
-                            <span class="material-symbols-outlined text-[17px]">account_circle</span>
-                            <span class="capitalize">${displayName}</span>
-                            <span class="material-symbols-outlined text-[14px]">logout</span>
+                        <button type="button" onclick="openLogoutModal()" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-surface-container-high border border-outline-variant text-primary font-bold rounded-full text-xs hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-95">
+                            <span class="material-symbols-outlined text-[16px] sm:text-[17px]">account_circle</span>
+                            <span class="hidden sm:inline capitalize max-w-[100px] truncate">${displayName}</span>
+                            <span class="material-symbols-outlined text-[13px] sm:text-[14px]">logout</span>
                         </button>
                     `;
                 } else {

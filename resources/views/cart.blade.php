@@ -12,10 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>document.documentElement.classList.remove('dark');</script>
 <script id="tailwind-config">
     tailwind.config = {
-        darkMode: "class",
+        darkMode: false,
         theme: {
             extend: {
                 "colors": { "surface-container-lowest": "#ffffff", "tertiary": "#000000", "surface-bright": "#fbf9f8", "secondary-container": "#e9decf", "primary": "#000000", "on-error-container": "#93000a", "on-secondary-fixed-variant": "#4c463b", "error-container": "#ffdad6", "on-primary-fixed": "#1c1b1b", "error": "#ba1a1a", "inverse-on-surface": "#f2f0f0", "on-background": "#1b1c1c", "surface-container": "#efeded", "on-primary": "#ffffff", "on-tertiary-container": "#848480", "tertiary-fixed": "#e4e2dd", "surface-container-low": "#f5f3f3", "inverse-surface": "#303031", "on-tertiary-fixed": "#1b1c19", "on-tertiary-fixed-variant": "#474744", "background": "#fbf9f8", "surface": "#fbf9f8", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#c8c6c2", "outline-variant": "#c4c7c7", "on-secondary-fixed": "#201b12", "surface-variant": "#e4e2e2", "surface-dim": "#dbdad9", "on-secondary-container": "#696255", "outline": "#747878", "on-primary-fixed-variant": "#474746", "inverse-primary": "#c8c6c5", "on-secondary": "#ffffff", "on-surface-variant": "#444748", "on-error": "#ffffff", "surface-tint": "#5f5e5e", "secondary-fixed-dim": "#cfc5b6", "tertiary-container": "#1b1c19", "surface-container-highest": "#e4e2e2", "primary-fixed": "#e5e2e1", "secondary": "#655d51", "on-primary-container": "#858383", "surface-container-high": "#e9e8e7", "primary-container": "#1c1b1b", "on-surface": "#1b1c1c", "secondary-fixed": "#ece1d2", "primary-fixed-dim": "#c8c6c5" },
