@@ -3,10 +3,16 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Http;
 
 class ProductStoreService
 {
-    private static function getStoragePath()
+    private static function getFirebaseUrl()
+    {
+        return 'https://galaksi-xii-default-rtdb.asia-southeast1.firebaseio.com/products.json';
+    }
+
+    private static function getLocalStoragePath()
     {
         $dir = is_writable('/tmp') ? '/tmp' : storage_path('app');
         if (!is_dir($dir)) {
@@ -17,7 +23,23 @@ class ProductStoreService
 
     public static function loadSavedProducts()
     {
-        $path = self::getStoragePath();
+        // 1. Try fetching from Cloud Firebase Realtime Database (Permanent Cloud Store)
+        try {
+            $response = Http::timeout(3)->get(self::getFirebaseUrl());
+            if ($response->successful()) {
+                $data = $response->json();
+                if (is_array($data) && count($data) > 0) {
+                    $products = array_values($data);
+                    @file_put_contents(self::getLocalStoragePath(), json_encode($products));
+                    return $products;
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fallback
+        }
+
+        // 2. Fallback to local /tmp file cache
+        $path = self::getLocalStoragePath();
         if (file_exists($path)) {
             $json = file_get_contents($path);
             $data = json_decode($json, true);
@@ -30,10 +52,14 @@ class ProductStoreService
 
     public static function saveAllProductsFromDb()
     {
-        $path = self::getStoragePath();
         try {
             $products = Product::all()->toArray();
-            @file_put_contents($path, json_encode($products, JSON_PRETTY_PRINT));
+            
+            // Save to local file cache
+            @file_put_contents(self::getLocalStoragePath(), json_encode($products, JSON_PRETTY_PRINT));
+
+            // Sync to Cloud Firebase Realtime Database for 100% permanent storage across serverless restarts
+            Http::timeout(5)->put(self::getFirebaseUrl(), $products);
         } catch (\Throwable $e) {
             // Ignore
         }
