@@ -17,7 +17,22 @@ class PageController extends Controller
 
     public function merchandise()
     {
-        $products = Product::all();
+        try {
+            $products = Product::all();
+            if ($products->isEmpty()) {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+                $products = Product::all();
+            }
+        } catch (\Throwable $e) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+                $products = Product::all();
+            } catch (\Throwable $ex) {
+                $products = collect();
+            }
+        }
         return view('merchandise', compact('products'));
     }
 
@@ -39,7 +54,27 @@ class PageController extends Controller
 
     public function productDetail($id)
     {
-        $product = Product::findOrFail($id);
+        try {
+            $product = Product::find($id);
+            if (!$product) {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+                $product = Product::find($id);
+            }
+        } catch (\Throwable $e) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+                $product = Product::find($id);
+            } catch (\Throwable $ex) {
+                $product = null;
+            }
+        }
+
+        if (!$product) {
+            abort(404, 'Produk tidak ditemukan.');
+        }
+
         return view('product-detail', compact('product'));
     }
 
